@@ -1,9 +1,9 @@
 import random
 import string
 
-WORDLIST_FILENAME = "palavras.txt"
+WORDLIST_FILENAME = "words.txt"
 
-def loadWords():
+def loadFile():
     """
     Depending on the size of the word list, this function may
     take a while to finish.
@@ -18,15 +18,30 @@ def loadWords():
     print "  ", len(wordlist), "words loaded."
     return random.choice(wordlist)
 
+def printWelcomeMessage(secretWord, differentLetters):
+    print '-------------'
+    print 'Welcome to the game, Hangam!'
+    print 'I am thinking of a word that is', len(secretWord), 'letters long with', differentLetters, 'differents letters.'
+    print '-------------'
+
+def CalcDifferentLetters(secretWord):
+    differentLetters = 0
+    for letter in string.ascii_lowercase:
+        if letter in secretWord:
+            differentLetters += 1
+    return differentLetters
+
+def ChooseWord(differentLetters, secretWord):
+    if differentLetters > 8:
+        choise = raw_input('Do you want to change the secret word? (Y to yes, N to no): ')
+        if choise == 'Y':
+            secretWord = loadFile().lower()
+            differentLetters = CalcDifferentLetters(secretWord)
+            printWelcomeMessage(secretWord, differentLetters)
+            secretWord = ChooseWord(differentLetters, secretWord)
+    return secretWord
 
 def isWordGuessed(secretWord, lettersGuessed):
-    secretLetters = []
-
-#    for letter in secretWord:
-#        if letter in secretLetters:
-#            secretLetters.append(letter)
-#        else:
-#            pass
 
     for letter in secretWord:
         if letter in lettersGuessed:
@@ -48,16 +63,12 @@ def getAvailableLetters():
     # 'abcdefghijklmnopqrstuvwxyz'
     available = string.ascii_lowercase
 
-
     return available
 
-def hangman(secretWord):
 
+def hangman(secretWord):
     guesses = 8
     lettersGuessed = []
-    print 'Welcome to the game, Hangam!'
-    print 'I am thinking of a word that is', len(secretWord), ' letters long.'
-    print '-------------'
 
     while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
         print 'You have ', guesses, 'guesses left.'
@@ -111,7 +122,7 @@ def hangman(secretWord):
             print 'Sorry, you ran out of guesses. The word was ', secretWord, '.'
 
 
-
-
-secretWord = loadWords().lower()
-hangman(secretWord)
+secretWord = loadFile().lower()
+differentLetters = CalcDifferentLetters(secretWord)
+printWelcomeMessage(secretWord, differentLetters)
+hangman(ChooseWord(differentLetters, secretWord))
