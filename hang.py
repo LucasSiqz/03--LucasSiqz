@@ -62,11 +62,15 @@ class Game():
                  self.guessed += letter
              else:
                  self.guessed += '_ '
+
          return self.guessed
 
-    def get_available_letters(self):
+    def get_available_letters(self, lettersGuessed):
         # 'abcdefghijklmnopqrstuvwxyz'
         self.available = string.ascii_lowercase
+        for letter in self.available:
+            if letter in lettersGuessed:
+                self.available = self.available.replace(letter, '')
 
         return self.available
 
@@ -77,10 +81,7 @@ class Game():
         while  self.is_word_guessed(secretWord, self.lettersGuessed) == False and self.guesses > 0:
             print 'You have ', self.guesses, 'guesses left.'
 
-            self.available = self.get_available_letters()
-            for letter in self.available:
-                if letter in self.lettersGuessed:
-                    self.available = self.available.replace(letter, '')
+            self.availabe = self.get_available_letters(self.lettersGuessed)
 
             print 'Available letters', self.available
             letter = raw_input('Please guess a letter: ')
@@ -109,6 +110,7 @@ class Game():
                 print 'Congratulations, you won!'
             else:
                 print 'Sorry, you ran out of guesses. The word was', secretWord, '.'
+
 
 file = File()
 inFile = file.open_file(WORDLIST_FILENAME)
