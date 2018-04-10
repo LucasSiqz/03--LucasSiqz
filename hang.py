@@ -1,7 +1,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "teste.txt"
+WORDLIST_FILENAME = "words.txt"
 
 class File():
 
