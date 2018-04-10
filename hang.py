@@ -57,7 +57,11 @@ class Game():
 
     def get_guessed_word(self):
          self.guessed = ''
-
+         for letter in secretWord:
+             if letter in self.lettersGuessed:
+                 self.guessed += letter
+             else:
+                 self.guessed += '_ '
          return self.guessed
 
     def get_available_letters(self):
@@ -70,49 +74,34 @@ class Game():
         self.guesses = 8
         self.lettersGuessed = []
 
-        while  self.is_word_guessed(secretWord, self.lettersGuessed) == False and self.guesses >0:
+        while  self.is_word_guessed(secretWord, self.lettersGuessed) == False and self.guesses > 0:
             print 'You have ', self.guesses, 'guesses left.'
 
             self.available = self.get_available_letters()
             for letter in self.available:
                 if letter in self.lettersGuessed:
-                    self.vailable = self.available.replace(letter, '')
+                    self.available = self.available.replace(letter, '')
 
             print 'Available letters', self.available
             letter = raw_input('Please guess a letter: ')
             if letter in self.lettersGuessed:
 
                 self.guessed = self.get_guessed_word()
-                for letter in secretWord:
-                    if letter in self.lettersGuessed:
-                        self.guessed += letter
-                    else:
-                        self.guessed += '_ '
-
                 print 'Oops! You have already guessed that letter: ', self.guessed
+
             elif letter in secretWord:
+
                 self.lettersGuessed.append(letter)
-
                 self.guessed = self.get_guessed_word()
-                for letter in secretWord:
-                    if letter in self.lettersGuessed:
-                        self.guessed += letter
-                    else:
-                        self.guessed += '_ '
-
                 print 'Good Guess: ', self.guessed
+
             else:
+
                 self.guesses -=1
                 self.lettersGuessed.append(letter)
-
                 self.guessed = self.get_guessed_word()
-                for letter in secretWord:
-                    if letter in self.lettersGuessed:
-                        self.guessed += letter
-                    else:
-                        self.guessed += '_ '
-
                 print 'Oops! That letter is not in my word: ',  self.guessed
+
             print '------------'
 
         else:
