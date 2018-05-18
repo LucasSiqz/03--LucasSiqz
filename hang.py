@@ -27,7 +27,10 @@ class Word():
 
     def choose_word(self, differentLetters, secretWord, wordList):
         if differentLetters > 8:
-            choise = raw_input('Do you want to change the secret word? (Y to yes): ')
+            choise = raw_input('Do you want to change the secret word? (Y to yes & N to no): ')
+            while(choise.lower() != 'y' and choise.lower() != 'n'):
+                choise = raw_input("invalid option. Do you want to change the secret word? (Y to yes & N to no): ")
+
             if choise == 'Y' or choise == 'y':
                 secretWord = random.choice(wordList)
                 differentLetters = self.calc_different_letters(secretWord)
@@ -85,21 +88,22 @@ class Game():
 
             print 'Available letters', self.available
             letter = raw_input('Please guess a letter: ')
-            if letter in self.lettersGuessed:
 
+            while letter.isalpha() == False or len(letter) > 1:
+                letter = raw_input('This is not a letter!  Please guess a letter: ')
+
+            if letter.lower() in self.lettersGuessed:
                 self.guessed = self.get_guessed_word()
                 print 'Oops! You have already guessed that letter: ', self.guessed
 
-            elif letter in secretWord:
-
-                self.lettersGuessed.append(letter)
+            elif letter.lower() in secretWord:
+                self.lettersGuessed.append(letter.lower())
                 self.guessed = self.get_guessed_word()
                 print 'Good Guess: ', self.guessed
 
             else:
-
                 self.guesses -=1
-                self.lettersGuessed.append(letter)
+                self.lettersGuessed.append(letter.lower())
                 self.guessed = self.get_guessed_word()
                 print 'Oops! That letter is not in my word: ',  self.guessed
 
