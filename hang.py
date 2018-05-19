@@ -1,21 +1,42 @@
 import random
 import string
+import logging
 
 WORDLIST_FILENAME = "words.txt"
+
 
 class File():
 
     def open_file(self, file):
-        return open(file, 'r', 0)
+        try:
+            inFile = open(file, 'r', 0)
+        except:
+            print("Error opening the file!\nShuting down...")
+            exit(1)
+
+        return inFile
 
     def read_file(self, inFIle):
         return inFile.readline()
+
+    def close_fle(self, inFile):
+        inFile.close()
 
 
 class Word():
 
     def create_word_list(self, line):
         return string.split(line)
+
+    def validate_word(self, wordList):
+        secretWord = random.choice(wordList)
+
+        for letter in secretWord:
+            if letter.isalpha() == False:
+                print("Invalid word finded!\nShuting down...")
+                exit(1)
+
+        return secretWord
 
     def calc_different_letters(self, secretWord):
         self.differentLetters = 0
@@ -32,7 +53,8 @@ class Word():
                 choise = raw_input("invalid option. Do you want to change the secret word? (Y to yes & N to no): ")
 
             if choise == 'Y' or choise == 'y':
-                secretWord = random.choice(wordList)
+                word = Word()
+                secretWord = word.validate_word(wordList)
                 differentLetters = self.calc_different_letters(secretWord)
                 game = Game()
                 game.print_welcome_message(secretWord, differentLetters)
@@ -122,9 +144,11 @@ line = file.read_file(inFile)
 
 word = Word()
 wordList = word.create_word_list(line)
-secretWord = random.choice(wordList)
+secretWord = word.validate_word(wordList)
 differentLetters = word.calc_different_letters(secretWord)
 
 game = Game()
 game.print_welcome_message(secretWord, differentLetters)
 game.hangman(word.choose_word(differentLetters, secretWord, wordList))
+
+file.close_fle(inFile)
