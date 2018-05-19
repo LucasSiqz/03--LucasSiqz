@@ -4,28 +4,34 @@ import logging
 
 WORDLIST_FILENAME = "words.txt"
 
+logging.basicConfig(filename='hangman.log', format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 class File():
 
     def open_file(self, file):
         try:
             inFile = open(file, 'r', 0)
+            logging.info('File opened')
         except:
             print("Error opening the file!\nShutting down...")
+            logging.info('Error opening file')
             exit(1)
 
         return inFile
 
     def read_file(self, inFIle):
+        logging.info('File read')
         return inFile.readline()
 
     def close_file(self, inFile):
+        logging.info('File closed')
         inFile.close()
 
 
 class Word():
 
     def create_word_list(self, line):
+        logging.info('Create word list')
         return string.split(line)
 
     def validate_word(self, wordList):
@@ -34,6 +40,7 @@ class Word():
         if secretWord.isalpha() == False:
             print("Invalid word finded!\nShutting down...")
             exit(1)
+        logging.info('Word has been validated')
 
         return secretWord
 
@@ -42,7 +49,7 @@ class Word():
         for letter in string.ascii_lowercase:
             if letter in secretWord:
                 self.differentLetters += 1
-
+        logging.info('Different letters has been calculated')
         return self.differentLetters
 
     def choose_word(self, differentLetters, secretWord, wordList):
@@ -65,8 +72,9 @@ class Word():
 class Game():
 
     def print_welcome_message(self, secretWord, differentLetters):
-            print '-------------'
+            logging.info('The game has started')
             print 'Welcome to the game, Hangam!'
+            print '-------------'
             print 'I am thinking of a word that is', len(secretWord), 'letters long with', differentLetters, 'differents letters.'
             print '-------------'
 
@@ -135,7 +143,7 @@ class Game():
                 print 'Congratulations, you won!'
             else:
                 print 'Sorry, you ran out of guesses. The word was', secretWord, '.'
-
+            logging.info('Finished the game')
 
 file = File()
 inFile = file.open_file(WORDLIST_FILENAME)
