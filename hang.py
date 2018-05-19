@@ -124,25 +124,30 @@ class Game():
             if letter.lower() in self.lettersGuessed:
                 self.guessed = self.get_guessed_word()
                 print 'Oops! You have already guessed that letter: ', self.guessed
+                logging.info('Letter already guessed')
 
             elif letter.lower() in secretWord:
                 self.lettersGuessed.append(letter.lower())
                 self.guessed = self.get_guessed_word()
                 print 'Good Guess: ', self.guessed
+                logging.info('Guessed letter in the word')
 
             else:
                 self.guesses -= 1
                 self.lettersGuessed.append(letter.lower())
                 self.guessed = self.get_guessed_word()
                 print 'Oops! That letter is not in my word: ',  self.guessed
+                logging.info('Guessed wrong')
 
             print '------------'
 
         else:
             if self.is_word_guessed(secretWord, self.lettersGuessed) == True:
                 print 'Congratulations, you won!'
+                logging.info('Won the game')
             else:
                 print 'Sorry, you ran out of guesses. The word was', secretWord, '.'
+                logging.info('Lose the game')
             logging.info('Finished the game')
 
 file = File()
