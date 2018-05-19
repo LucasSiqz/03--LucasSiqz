@@ -11,7 +11,7 @@ class File():
         try:
             inFile = open(file, 'r', 0)
         except:
-            print("Error opening the file!\nShuting down...")
+            print("Error opening the file!\nShutting down...")
             exit(1)
 
         return inFile
@@ -31,10 +31,9 @@ class Word():
     def validate_word(self, wordList):
         secretWord = random.choice(wordList)
 
-        for letter in secretWord:
-            if letter.isalpha() == False:
-                print("Invalid word finded!\nShuting down...")
-                exit(1)
+        if secretWord.isalpha() == False:
+            print("Invalid word finded!\nShutting down...")
+            exit(1)
 
         return secretWord
 
@@ -124,7 +123,7 @@ class Game():
                 print 'Good Guess: ', self.guessed
 
             else:
-                self.guesses -=1
+                self.guesses -= 1
                 self.lettersGuessed.append(letter.lower())
                 self.guessed = self.get_guessed_word()
                 print 'Oops! That letter is not in my word: ',  self.guessed
