@@ -19,7 +19,7 @@ class File():
     def read_file(self, inFIle):
         return inFile.readline()
 
-    def close_fle(self, inFile):
+    def close_file(self, inFile):
         inFile.close()
 
 
@@ -141,6 +141,7 @@ class Game():
 file = File()
 inFile = file.open_file(WORDLIST_FILENAME)
 line = file.read_file(inFile)
+file.close_file(inFile)
 
 word = Word()
 wordList = word.create_word_list(line)
@@ -150,5 +151,3 @@ differentLetters = word.calc_different_letters(secretWord)
 game = Game()
 game.print_welcome_message(secretWord, differentLetters)
 game.hangman(word.choose_word(differentLetters, secretWord, wordList))
-
-file.close_fle(inFile)
